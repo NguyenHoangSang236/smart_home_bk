@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_home/register_screen.dart';
 import 'package:smart_home/utils.dart';
 
 class LoginPage extends StatefulWidget {
@@ -55,11 +56,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void redirectToRegisterPage() {
-    Utils.removeLocalStorageData("accounts");
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const RegisterPage()),
-    // );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const RegisterPage()),
+    );
   }
 
   void setObscureForPassword() {
@@ -155,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     style: const TextStyle(color: Colors.white),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 45),
                   ElevatedButton(
                     onPressed: login,
                     style: ElevatedButton.styleFrom(

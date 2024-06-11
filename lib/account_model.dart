@@ -24,4 +24,9 @@ class AccountModel {
       password: json['password'],
     );
   }
+
+  @override
+  String toString() {
+    return "{'name': '$name', 'userName': '$userName', 'password': '$password'}";
+  }
 }

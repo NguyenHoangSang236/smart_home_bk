@@ -24,22 +24,29 @@ class Utils {
     return [];
   }
 
-  static void saveNewAccount(AccountModel newAcc) async {
+  static Future<bool> saveNewAccount(AccountModel newAcc) async {
     final prefs = await SharedPreferences.getInstance();
-    bool isExisted = false;
+    List<Map<String, dynamic>> accounts = await getAllAccounts();
+
+    if (await isAccountExisted(newAcc) == false) {
+      accounts.add(newAcc.toJson());
+      prefs.setString('accounts', jsonEncode(accounts));
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> isAccountExisted(AccountModel acc) async {
     List<Map<String, dynamic>> accounts = await getAllAccounts();
 
     for (Map<String, dynamic> map in accounts) {
-      if (map['userName'] == newAcc.userName) {
-        isExisted == true;
-        break;
+      if (map['userName'] == acc.userName) {
+        return true;
       }
     }
 
-    if (!isExisted) {
-      accounts.add(newAcc.toJson());
-      prefs.setString('accounts', accounts.toString());
-    }
+    return false;
   }
 
   static void setLocalStorageData(String key, dynamic value) async {
