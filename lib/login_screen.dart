@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_home/home_screen.dart';
 import 'package:smart_home/register_screen.dart';
 import 'package:smart_home/utils.dart';
 
@@ -36,6 +37,12 @@ class _LoginPageState extends State<LoginPage> {
             const SnackBar(
               content: Text('Chào mừng bạn quay trở lại!'),
               duration: Duration(seconds: 2),
+            ),
+          );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(name: acc['name']),
             ),
           );
           break;
