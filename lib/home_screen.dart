@@ -53,16 +53,18 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.all(15),
         child: SizedBox(
           height: MediaQuery.sizeOf(context).height,
-          child: GridView.count(
+          child: GridView.extent(
             shrinkWrap: true,
-            crossAxisCount: 2,
+            primary: false,
             crossAxisSpacing: 12,
             mainAxisSpacing: 10,
+            maxCrossAxisExtent: MediaQuery.sizeOf(context).width / 2,
+            childAspectRatio: 0.75,
             children: const [
               ElectricalDeviceOption(
-                name: "Máy lạnh",
+                name: "Rèm cửa",
                 room: "Phòng khách",
-                deviceIcon: FontAwesomeIcons.snowflake,
+                deviceIcon: Icons.curtains_outlined,
                 backgroundColor: Colors.purpleAccent,
               ),
               ElectricalDeviceOption(
@@ -70,6 +72,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 room: "Phòng ngủ",
                 deviceIcon: Icons.light,
                 backgroundColor: Colors.cyan,
+              ),
+              ElectricalDeviceOption(
+                name: "Quạt",
+                room: "Phòng ngủ",
+                deviceIcon: FontAwesomeIcons.fan,
+                backgroundColor: Colors.greenAccent,
               ),
             ],
           ),
