@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smart_home/home_screen.dart';
 import 'package:smart_home/register_screen.dart';
+import 'package:smart_home/room_screen.dart';
 import 'package:smart_home/utils.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,6 +15,14 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passwordController = TextEditingController();
 
   bool _isObscure = true;
+  bool _rememberMe = false;
+  String _savedName = '';
+
+  void rememberMe(bool? value) {
+    setState(() {
+      _rememberMe = value ?? false;
+    });
+  }
 
   void login() async {
     if (_userController.text.isEmpty || _passwordController.text.isEmpty) {
@@ -27,7 +35,6 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       List<Map<String, dynamic>> accounts = await Utils.getAllAccounts();
       bool isQualified = false;
-      print(accounts.toString());
 
       for (Map<String, dynamic> acc in accounts) {
         if (acc['userName'] == _userController.text &&
@@ -39,10 +46,23 @@ class _LoginPageState extends State<LoginPage> {
               duration: Duration(seconds: 2),
             ),
           );
+
+          if (_rememberMe) {
+            Utils.setLocalStorageData("savedUserName", acc['userName']);
+            Utils.setLocalStorageData("savedPassword", acc['password']);
+            Utils.setLocalStorageData("savedName", acc['name']);
+            Utils.setLocalStorageData("rememberMe", 'true');
+          } else {
+            Utils.removeLocalStorageData("savedUserName");
+            Utils.removeLocalStorageData("savedPassword");
+            Utils.removeLocalStorageData("savedName");
+            Utils.setLocalStorageData("rememberMe", 'false');
+          }
+
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(name: acc['name']),
+              builder: (context) => RoomScreen(name: acc['name']),
             ),
           );
           break;
@@ -75,6 +95,35 @@ class _LoginPageState extends State<LoginPage> {
         _isObscure = !_isObscure;
       });
     }
+  }
+
+  @override
+  void initState() {
+    Utils.getLocalStorageData('savedUserName').then(
+      (value) => _userController.text = value.toString(),
+    );
+    Utils.getLocalStorageData('savedPassword').then(
+      (value) => _passwordController.text = value.toString(),
+    );
+    Utils.getLocalStorageData('savedName').then(
+      (value) => _savedName = value.toString(),
+    );
+    Utils.getLocalStorageData('rememberMe').then((value) {
+      _rememberMe = value == 'true';
+
+      if (_rememberMe!) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RoomScreen(
+              name: _savedName,
+            ),
+          ),
+        );
+      }
+    });
+
+    super.initState();
   }
 
   @override
@@ -162,7 +211,21 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     style: const TextStyle(color: Colors.white),
                   ),
-                  const SizedBox(height: 45),
+                  const SizedBox(height: 15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Checkbox(
+                          value: _rememberMe ?? false, onChanged: rememberMe),
+                      const Text(
+                        "Ghi nhớ đăng nhập",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: login,
                     style: ElevatedButton.styleFrom(

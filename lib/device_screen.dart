@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:smart_home/electrical_device_option.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.name});
+class DeviceScreen extends StatefulWidget {
+  const DeviceScreen({
+    super.key,
+    required this.name,
+    required this.deviceComponents,
+  });
 
   final String name;
+  final List<Widget> deviceComponents;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<DeviceScreen> createState() => _DeviceScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _DeviceScreenState extends State<DeviceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,33 +57,11 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.all(15),
         child: SizedBox(
           height: MediaQuery.sizeOf(context).height,
-          child: GridView.extent(
-            shrinkWrap: true,
-            primary: false,
-            crossAxisSpacing: 12,
+          child: StaggeredGrid.count(
             mainAxisSpacing: 10,
-            maxCrossAxisExtent: MediaQuery.sizeOf(context).width / 2,
-            childAspectRatio: 0.75,
-            children: const [
-              ElectricalDeviceOption(
-                name: "Rèm cửa",
-                room: "Phòng khách",
-                deviceIcon: Icons.curtains_outlined,
-                backgroundColor: Colors.purpleAccent,
-              ),
-              ElectricalDeviceOption(
-                name: "Đèn",
-                room: "Phòng ngủ",
-                deviceIcon: Icons.light,
-                backgroundColor: Colors.cyan,
-              ),
-              ElectricalDeviceOption(
-                name: "Quạt",
-                room: "Phòng ngủ",
-                deviceIcon: FontAwesomeIcons.fan,
-                backgroundColor: Colors.greenAccent,
-              ),
-            ],
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            children: widget.deviceComponents,
           ),
         ),
       ),
