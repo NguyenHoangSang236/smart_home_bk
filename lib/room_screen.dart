@@ -147,11 +147,11 @@ class _RoomScreenState extends State<RoomScreen> {
         );
       },
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 15),
-        padding: EdgeInsets.all(20),
+        margin: EdgeInsets.symmetric(vertical: 20),
+        padding: EdgeInsets.all(40),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.lime,
+          color: Color(0xFFADEBB3),
           borderRadius: BorderRadius.circular(15),
         ),
         child: Text(
